@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flower Goal Widget</title>
+  <style>
+    body {
+      margin: 0;
+      background: transparent;
+    }
+
+    #flower-goal-widget {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    #flower-image {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      transition: all 0.4s ease;
+    }
+  </style>
+</head>
+<body>
+  <div id="flower-goal-widget">
+    <img id="flower-image" src="https://i.imgur.com/Utyxct0.png" alt="Flower Stage" />
+  </div>
+
+  <script>
+    const stageImages = [
+      "https://i.imgur.com/Utyxct0.png",
+      "https://i.imgur.com/ubXAIgE.png",
+      "https://i.imgur.com/F3fS9nZ.png",
+      "https://i.imgur.com/1zaInw1.png",
+      "https://i.imgur.com/pzpZ4n9.png",
+      "https://i.imgur.com/XDruVuE.png"
+    ];
+
+    const goalTotal = 100;
+    let currentProgress = 0;
+    const flowerImg = document.getElementById("flower-image");
+
+    function updateFlower() {
+      const percent = currentProgress / goalTotal;
+      const index = Math.min(Math.floor(percent * stageImages.length), stageImages.length - 1);
+      flowerImg.src = stageImages[index];
+
+      if (percent >= 1) {
+        setTimeout(() => {
+          currentProgress = 0;
+          flowerImg.src = stageImages[0];
+        }, 1500);
+      }
+    }
+
+    (function previewTestLoop() {
+      let loopIndex = 0;
+      const testSteps = [10, 20, 30, 40];
+
+      function nextStep() {
+        if (loopIndex >= testSteps.length) {
+          loopIndex = 0;
+          currentProgress = 0;
+          flowerImg.src = stageImages[0];
+          setTimeout(nextStep, 1500);
+          return;
+        }
+
+        currentProgress += testSteps[loopIndex];
+        updateFlower();
+        loopIndex++;
+        setTimeout(nextStep, 2000);
+      }
+
+      nextStep();
+    })();
+  </script>
+</body>
+</html>
